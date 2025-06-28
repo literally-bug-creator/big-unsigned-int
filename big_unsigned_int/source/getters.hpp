@@ -4,4 +4,6 @@
 
 namespace big_uint {
 size_t getLength(const BigUInt& number);
+
+Chunk getChunk(const BigUInt& number, size_t index);
 }  // namespace big_uint
