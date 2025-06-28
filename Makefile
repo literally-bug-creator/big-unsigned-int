@@ -1,26 +1,41 @@
-.PHONY: all debug release test bench clean
+.PHONY: all debug release test benchmark format-check format static-analysis clean
 
 BUILD_DIR = build
 CXX = clang++
-JOBS = $(shell nproc)
 
 all: release
 
-debug: clean
+debug:
 	@mkdir -p $(BUILD_DIR)
 	@cd $(BUILD_DIR) && cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=$(CXX) ..
-	@cd $(BUILD_DIR) && cmake --build . --parallel $(JOBS)
+	@cd $(BUILD_DIR) && make -j$(shell nproc)
 
-release: clean
+release:
 	@mkdir -p $(BUILD_DIR)
 	@cd $(BUILD_DIR) && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=$(CXX) ..
-	@cd $(BUILD_DIR) && cmake --build . --parallel $(JOBS)
+	@cd $(BUILD_DIR) && make -j$(shell nproc)
 
 test:
-	@./$(BUILD_DIR)/tests/run_tests
+	@cd $(BUILD_DIR) && ./tests/run_tests
 
-bench:
-	@./$(BUILD_DIR)/benchmarks/run_benchmark --benchmark_time_unit=ms
+benchmark:
+	@cd $(BUILD_DIR) && ./benchmarks/run_benchmark --benchmark_time_unit=ms
+
+format-check:
+	@find . -name "*.cpp" -o -name "*.hpp" -o -name "*.h" -o -name "*.cc" | \
+	grep -E "(big_unsigned_int|tests|benchmarks)" | \
+	grep -v "third-party" | \
+	xargs clang-format --dry-run --Werror --style=file
+
+format:
+	@find . -name "*.cpp" -o -name "*.hpp" -o -name "*.h" -o -name "*.cc" | \
+	grep -E "(big_unsigned_int|tests|benchmarks)" | \
+	grep -v "third-party" | \
+	xargs clang-format -i --style=file
+
+static-analysis: debug
+	@find big_unsigned_int -name "*.cpp" -o -name "*.hpp" -o -name "*.h" | \
+	xargs clang-tidy -p $(BUILD_DIR) --quiet
 
 clean:
 	@rm -rf $(BUILD_DIR)
