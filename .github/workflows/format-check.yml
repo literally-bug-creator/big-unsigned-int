@@ -15,10 +15,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
         
-    - name: Install dependencies
+    - name: Setup build environment
       run: |
-        sudo apt-get update
-        sudo apt-get install -y clang-format
+        # Use pre-installed clang-format from ubuntu-latest
+        which clang-format || echo "clang-format not found"
+        clang-format --version
         
     - name: Check formatting
       run: make format-check
