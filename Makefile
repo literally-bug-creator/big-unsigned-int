@@ -1,7 +1,7 @@
 .PHONY: all debug release test benchmark format-check format static-analysis clean
 
 BUILD_DIR = build
-CXX = clang++
+CXX = clang++-20
 
 all: release
 
@@ -25,17 +25,17 @@ format-check:
 	@find . -name "*.cpp" -o -name "*.hpp" -o -name "*.h" -o -name "*.cc" | \
 	grep -E "(big_unsigned_int|tests|benchmarks)" | \
 	grep -v "third-party" | \
-	xargs clang-format --dry-run --Werror --style=file
+	xargs clang-format-20 --dry-run --Werror --style=file
 
 format:
 	@find . -name "*.cpp" -o -name "*.hpp" -o -name "*.h" -o -name "*.cc" | \
 	grep -E "(big_unsigned_int|tests|benchmarks)" | \
 	grep -v "third-party" | \
-	xargs clang-format -i --style=file
+	xargs clang-format-20 -i --style=file
 
 static-analysis: debug
 	@find big_unsigned_int -name "*.cpp" -o -name "*.hpp" -o -name "*.h" | \
-	xargs clang-tidy -p $(BUILD_DIR) --quiet
+	xargs clang-tidy-20 -p $(BUILD_DIR) --quiet
 
 clean:
 	@rm -rf $(BUILD_DIR)
