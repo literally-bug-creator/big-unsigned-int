@@ -16,14 +16,14 @@ BigUInt sub(const BigUInt& minuend, const BigUInt& subtrahend);
 
 BigUInt mul(const BigUInt& multiplicand, const BigUInt& multiplier);
 
-BigUInt isEqual(const BigUInt& left, const BigUInt& right);
+bool isEqual(const BigUInt& left, const BigUInt& right);
 
-BigUInt isGreater(const BigUInt& left, const BigUInt& right);
+bool isGreater(const BigUInt& left, const BigUInt& right);
 
-BigUInt isLower(const BigUInt& left, const BigUInt& right);
+bool isLower(const BigUInt& left, const BigUInt& right);
 
-BigUInt isGreaterOrEqual(const BigUInt& left, const BigUInt& right);
+bool isGreaterOrEqual(const BigUInt& left, const BigUInt& right);
 
-BigUInt isLowerOrEqual(const BigUInt& left, const BigUInt& right);
+bool isLowerOrEqual(const BigUInt& left, const BigUInt& right);
 
 }  // namespace big_uint
