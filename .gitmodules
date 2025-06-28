@@ -1,0 +1,6 @@
+[submodule "benchmarks/third-party/benchmark"]
+	path = benchmarks/third-party/benchmark
+	url = https://github.com/google/benchmark.git
+[submodule "tests/third-party/gtest"]
+	path = tests/third-party/gtest
+	url = https://github.com/google/googletest.git
