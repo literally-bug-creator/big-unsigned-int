@@ -10,19 +10,19 @@ jobs:
   build-and-test:
     name: Build and Test
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
         submodules: recursive
-        
+
     - name: Setup build environment
       run: |
         # Use pre-installed clang from ubuntu-latest
         which clang++ || echo "clang++ not found"
         clang++ --version
         cmake --version
-        
+
     - name: Build and test
-      run: make test
+      run: make debug && make test

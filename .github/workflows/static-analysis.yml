@@ -10,13 +10,13 @@ jobs:
   static-analysis:
     name: Static Analysis
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
         submodules: recursive
-        
+
     - name: Setup build environment
       run: |
         # Use pre-installed clang from ubuntu-latest
@@ -24,6 +24,6 @@ jobs:
         which clang-tidy || echo "clang-tidy not found"
         clang++ --version
         clang-tidy --version
-        
+
     - name: Run static analysis
       run: make static-analysis
