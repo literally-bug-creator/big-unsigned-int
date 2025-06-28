@@ -20,7 +20,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y clang clang++ clang-tidy cmake make
+        sudo apt-get install -y clang-20 clang++-20 clang-tidy-20 cmake make
         
     - name: Run static analysis
       run: make static-analysis
