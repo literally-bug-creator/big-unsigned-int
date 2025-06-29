@@ -16,6 +16,8 @@ BigUInt sub(const BigUInt& minuend, const BigUInt& subtrahend);
 
 BigUInt mul(const BigUInt& multiplicand, const BigUInt& multiplier);
 
+bool isZero(const BigUInt& number);
+
 bool isEqual(const BigUInt& left, const BigUInt& right);
 
 bool isGreater(const BigUInt& left, const BigUInt& right);
