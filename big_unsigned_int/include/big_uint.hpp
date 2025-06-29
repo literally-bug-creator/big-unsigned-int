@@ -26,4 +26,6 @@ bool isGreaterOrEqual(const BigUInt& left, const BigUInt& right);
 
 bool isLowerOrEqual(const BigUInt& left, const BigUInt& right);
 
+BigUInt trim(const BigUInt& number);
+
 }  // namespace big_uint
