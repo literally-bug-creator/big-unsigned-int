@@ -10,6 +10,8 @@ struct BigUInt {
     std::vector<Chunk> limbs;
 };
 
+BigUInt makeZero();
+
 BigUInt add(const BigUInt& augend, const BigUInt& addend);
 
 BigUInt sub(const BigUInt& minuend, const BigUInt& subtrahend);
