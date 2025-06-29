@@ -5,7 +5,7 @@
 
 using namespace big_uint;
 namespace {
-void isEqualBench(benchmark::State& state) {
+void benchIsEqual(benchmark::State& state) {
     auto range = static_cast<size_t>(state.range(0));
     Chunk maxValue = 999999999999999999;
     std::vector<Chunk> lhsChunks(range, maxValue);
@@ -19,7 +19,7 @@ void isEqualBench(benchmark::State& state) {
     }
 }
 
-void isGreaterBench(benchmark::State& state) {
+void benchIsGreater(benchmark::State& state) {
     auto range = static_cast<size_t>(state.range(0));
     Chunk maxValue = 999999999999999999;
     std::vector<Chunk> lhsChunks(range, maxValue);
@@ -33,7 +33,7 @@ void isGreaterBench(benchmark::State& state) {
     }
 }
 
-void isLowerBench(benchmark::State& state) {
+void benchIsLower(benchmark::State& state) {
     auto range = static_cast<size_t>(state.range(0));
     Chunk maxValue = 999999999999999999;
     std::vector<Chunk> lhsChunks(range, maxValue);
@@ -47,7 +47,7 @@ void isLowerBench(benchmark::State& state) {
     }
 }
 
-void isGreaterOrEqualBench(benchmark::State& state) {
+void benchIsGreaterOrEqual(benchmark::State& state) {
     auto range = static_cast<size_t>(state.range(0));
     Chunk maxValue = 999999999999999999;
     std::vector<Chunk> lhsChunks(range, maxValue);
@@ -61,7 +61,7 @@ void isGreaterOrEqualBench(benchmark::State& state) {
     }
 }
 
-void isLowerOrEqualBench(benchmark::State& state) {
+void benchIsLowerOrEqual(benchmark::State& state) {
     auto range = static_cast<size_t>(state.range(0));
     Chunk maxValue = 999999999999999999;
     std::vector<Chunk> lhsChunks(range, maxValue);
@@ -76,8 +76,8 @@ void isLowerOrEqualBench(benchmark::State& state) {
 }
 }  // namespace
 constexpr size_t MAX_SIZE = 5556;
-BENCHMARK(isEqualBench)->Range(1, MAX_SIZE);           // NOLINT(cert-err58-cpp)
-BENCHMARK(isGreaterBench)->Range(1, MAX_SIZE);         // NOLINT(cert-err58-cpp)
-BENCHMARK(isLowerBench)->Range(1, MAX_SIZE);           // NOLINT(cert-err58-cpp)
-BENCHMARK(isGreaterOrEqualBench)->Range(1, MAX_SIZE);  // NOLINT(cert-err58-cpp)
-BENCHMARK(isLowerOrEqualBench)->Range(1, MAX_SIZE);    // NOLINT(cert-err58-cpp)
+BENCHMARK(benchIsEqual)->Range(1, MAX_SIZE);           // NOLINT(cert-err58-cpp)
+BENCHMARK(benchIsGreater)->Range(1, MAX_SIZE);         // NOLINT(cert-err58-cpp)
+BENCHMARK(benchIsLower)->Range(1, MAX_SIZE);           // NOLINT(cert-err58-cpp)
+BENCHMARK(benchIsGreaterOrEqual)->Range(1, MAX_SIZE);  // NOLINT(cert-err58-cpp)
+BENCHMARK(benchIsLowerOrEqual)->Range(1, MAX_SIZE);    // NOLINT(cert-err58-cpp)
