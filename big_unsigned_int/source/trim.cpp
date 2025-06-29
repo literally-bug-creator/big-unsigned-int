@@ -1,6 +1,7 @@
 #include <cstdint>
 
 #include "big_uint.hpp"
+#include "getters.hpp"
 
 namespace big_uint {
 namespace {
@@ -18,6 +19,7 @@ std::vector<Chunk> removeLeadingZeros(const std::vector<Chunk>& limbs) {
 }
 }  // namespace
 BigUInt trim(const BigUInt& number) {
-    return BigUInt(removeLeadingZeros(number.limbs));
+    const std::vector<Chunk>& chunks = getChunks(number);
+    return BigUInt(removeLeadingZeros(chunks));
 }
 }  // namespace big_uint
