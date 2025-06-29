@@ -13,4 +13,8 @@ Chunk getChunk(const BigUInt& number, size_t index) {
     }
     return number.limbs[index];
 }
+
+const std::vector<Chunk>& getChunks(const BigUInt& number) {
+    return number.limbs;
+}
 }  // namespace big_uint
