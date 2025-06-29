@@ -5,14 +5,14 @@
 
 namespace big_uint {
 namespace {
-std::vector<Chunk> removeLeadingChunks(const std::vector<Chunk>& chunks, size_t amount) {
+std::vector<Chunk> removeLeadingLimbs(const std::vector<Chunk>& limbs, size_t amount) {
     if (amount == 0) {
-        return chunks;
+        return limbs;
     }
-    if (amount >= chunks.size()) {
+    if (amount >= limbs.size()) {
         return {};
     }
-    return {chunks.begin() + static_cast<int64_t>(amount), chunks.end()};
+    return {limbs.begin() + static_cast<int64_t>(amount), limbs.end()};
 }
 }  // namespace
 BigUInt round(const BigUInt& number, size_t newSize) {
@@ -20,8 +20,8 @@ BigUInt round(const BigUInt& number, size_t newSize) {
     if (newSize >= numberLength) {
         return number;
     }
-    const std::vector<Chunk>& chunks = getChunks(number);
+    const std::vector<Chunk>& limbs = getLimbs(number);
     size_t toDelete = numberLength - newSize;
-    return BigUInt(removeLeadingChunks(chunks, toDelete));
+    return BigUInt(removeLeadingLimbs(limbs, toDelete));
 }
 }  // namespace big_uint
