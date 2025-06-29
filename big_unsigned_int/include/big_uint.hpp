@@ -28,4 +28,6 @@ bool isLowerOrEqual(const BigUInt& left, const BigUInt& right);
 
 BigUInt trim(const BigUInt& number);
 
+BigUInt round(const BigUInt& number, size_t newSize);
+
 }  // namespace big_uint
