@@ -19,7 +19,7 @@ std::vector<Chunk> removeLeadingZeros(const std::vector<Chunk>& limbs) {
 }
 }  // namespace
 BigUInt trim(const BigUInt& number) {
-    const std::vector<Chunk>& chunks = getChunks(number);
+    const std::vector<Chunk>& chunks = getLimbs(number);
     return BigUInt(removeLeadingZeros(chunks));
 }
 }  // namespace big_uint
