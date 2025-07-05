@@ -14,7 +14,11 @@ BigUInt makeZero();
 
 BigUInt add(const BigUInt& augend, const BigUInt& addend);
 
+BigUInt add(const BigUInt& augend, const BigUInt& addend, size_t shift);
+
 BigUInt sub(const BigUInt& minuend, const BigUInt& subtrahend);
+
+BigUInt sub(const BigUInt& minuend, const BigUInt& subtrahend, size_t shift);
 
 BigUInt mul(const BigUInt& multiplicand, const BigUInt& multiplier);
 
