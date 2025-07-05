@@ -401,11 +401,11 @@ TEST_F(BigUIntAddSub, AddSubInverseWithShift) {
     BigUInt rhs = createTestBigUInt({789});
     size_t shift = 2;
 
-    BigUInt shifted_lhs = createTestBigUInt({0, 0, 123, 456});
-    BigUInt sum = add(shifted_lhs, rhs);
+    BigUInt shiftedLhs = createTestBigUInt({0, 0, 123, 456});
+    BigUInt sum = add(shiftedLhs, rhs);
     BigUInt diff = sub(sum, rhs);
 
-    EXPECT_TRUE(isEqual(diff, shifted_lhs));
+    EXPECT_TRUE(isEqual(diff, shiftedLhs));
 }
 
 TEST_F(BigUIntAddSub, ShiftCommutativeProperty) {
