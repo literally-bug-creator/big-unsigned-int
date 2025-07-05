@@ -247,3 +247,108 @@ TEST_F(BigUIntMul, OverflowHandling) {
     EXPECT_FALSE(isZero(result));
     EXPECT_TRUE(isGreater(result, lhs));
 }
+
+TEST_F(BigUIntMul, VeryLargeNumbers) {
+    std::vector<Chunk> large_limbs1(17000, 1);
+    std::vector<Chunk> large_limbs2(17000, 1);
+
+    BigUInt lhs = createTestBigUInt(large_limbs1);
+    BigUInt rhs = createTestBigUInt(large_limbs2);
+
+    BigUInt result = mul(lhs, rhs);
+
+    EXPECT_FALSE(isZero(result));
+    EXPECT_TRUE(isGreater(result, lhs));
+    EXPECT_TRUE(isGreater(result, rhs));
+}
+
+TEST_F(BigUIntMul, LargeNumberBySmall) {
+    std::vector<Chunk> large_limbs(17000, 2);
+    BigUInt large_num = createTestBigUInt(large_limbs);
+    BigUInt small_num = createTestBigUInt({3});
+
+    BigUInt result = mul(large_num, small_num);
+
+    EXPECT_FALSE(isZero(result));
+    EXPECT_TRUE(isGreater(result, large_num));
+}
+
+TEST_F(BigUIntMul, LargeNumberCommutative) {
+    std::vector<Chunk> limbs1(17000, 3);
+    std::vector<Chunk> limbs2(17000, 5);
+
+    BigUInt lhs = createTestBigUInt(limbs1);
+    BigUInt rhs = createTestBigUInt(limbs2);
+
+    BigUInt result1 = mul(lhs, rhs);
+    BigUInt result2 = mul(rhs, lhs);
+
+    EXPECT_TRUE(isEqual(result1, result2));
+}
+
+TEST_F(BigUIntMul, LargeNumberByOne) {
+    std::vector<Chunk> large_limbs(17000, 42);
+    BigUInt large_num = createTestBigUInt(large_limbs);
+    BigUInt one = createTestBigUInt({1});
+
+    BigUInt result = mul(large_num, one);
+
+    EXPECT_TRUE(isEqual(result, large_num));
+}
+
+TEST_F(BigUIntMul, LargeNumberByZero) {
+    std::vector<Chunk> large_limbs(17000, 42);
+    BigUInt large_num = createTestBigUInt(large_limbs);
+    BigUInt zero = createTestBigUInt({});
+
+    BigUInt result = mul(large_num, zero);
+
+    EXPECT_TRUE(isEqual(result, zero));
+}
+
+TEST_F(BigUIntMul, PowerOfTwoLarge) {
+    std::vector<Chunk> limbs1(17000, 0);
+    std::vector<Chunk> limbs2(17000, 0);
+    limbs1[0] = 4;
+    limbs2[0] = 8;
+
+    BigUInt lhs = createTestBigUInt(limbs1);
+    BigUInt rhs = createTestBigUInt(limbs2);
+    BigUInt expected = createTestBigUInt({32});
+
+    BigUInt result = mul(lhs, rhs);
+
+    EXPECT_TRUE(isEqual(result, expected));
+}
+
+TEST_F(BigUIntMul, MediumToLargeBoundary) {
+    std::vector<Chunk> limbs1(16400, 1);
+    std::vector<Chunk> limbs2(16400, 2);
+
+    BigUInt lhs = createTestBigUInt(limbs1);
+    BigUInt rhs = createTestBigUInt(limbs2);
+
+    BigUInt result = mul(lhs, rhs);
+
+    EXPECT_FALSE(isZero(result));
+    EXPECT_TRUE(isGreater(result, lhs));
+    EXPECT_TRUE(isGreater(result, rhs));
+}
+
+TEST_F(BigUIntMul, LargeNumberPattern) {
+    std::vector<Chunk> limbs1(17000);
+    std::vector<Chunk> limbs2(17000);
+
+    // Fill with alternating pattern
+    for (size_t i = 0; i < limbs1.size(); ++i) {
+        limbs1[i] = (i % 2 == 0) ? 1 : 0;
+        limbs2[i] = (i % 2 == 0) ? 2 : 0;
+    }
+
+    BigUInt lhs = createTestBigUInt(limbs1);
+    BigUInt rhs = createTestBigUInt(limbs2);
+
+    BigUInt result = mul(lhs, rhs);
+
+    EXPECT_FALSE(isZero(result));
+}
