@@ -249,11 +249,11 @@ TEST_F(BigUIntMul, OverflowHandling) {
 }
 
 TEST_F(BigUIntMul, VeryLargeNumbers) {
-    std::vector<Chunk> large_limbs1(17000, 1);
-    std::vector<Chunk> large_limbs2(17000, 1);
+    std::vector<Chunk> leftLargeLimbs(17000, 1);
+    std::vector<Chunk> rightLargeLimbs(17000, 1);
 
-    BigUInt lhs = createTestBigUInt(large_limbs1);
-    BigUInt rhs = createTestBigUInt(large_limbs2);
+    BigUInt lhs = createTestBigUInt(leftLargeLimbs);
+    BigUInt rhs = createTestBigUInt(rightLargeLimbs);
 
     BigUInt result = mul(lhs, rhs);
 
@@ -263,14 +263,14 @@ TEST_F(BigUIntMul, VeryLargeNumbers) {
 }
 
 TEST_F(BigUIntMul, LargeNumberBySmall) {
-    std::vector<Chunk> large_limbs(17000, 2);
-    BigUInt large_num = createTestBigUInt(large_limbs);
-    BigUInt small_num = createTestBigUInt({3});
+    std::vector<Chunk> largeLimbs(17000, 2);
+    BigUInt largeNum = createTestBigUInt(largeLimbs);
+    BigUInt smallNum = createTestBigUInt({3});
 
-    BigUInt result = mul(large_num, small_num);
+    BigUInt result = mul(largeNum, smallNum);
 
     EXPECT_FALSE(isZero(result));
-    EXPECT_TRUE(isGreater(result, large_num));
+    EXPECT_TRUE(isGreater(result, largeNum));
 }
 
 TEST_F(BigUIntMul, LargeNumberCommutative) {
@@ -287,21 +287,21 @@ TEST_F(BigUIntMul, LargeNumberCommutative) {
 }
 
 TEST_F(BigUIntMul, LargeNumberByOne) {
-    std::vector<Chunk> large_limbs(17000, 42);
-    BigUInt large_num = createTestBigUInt(large_limbs);
+    std::vector<Chunk> largeLimbs(17000, 42);
+    BigUInt largeNum = createTestBigUInt(largeLimbs);
     BigUInt one = createTestBigUInt({1});
 
-    BigUInt result = mul(large_num, one);
+    BigUInt result = mul(largeNum, one);
 
-    EXPECT_TRUE(isEqual(result, large_num));
+    EXPECT_TRUE(isEqual(result, largeNum));
 }
 
 TEST_F(BigUIntMul, LargeNumberByZero) {
-    std::vector<Chunk> large_limbs(17000, 42);
-    BigUInt large_num = createTestBigUInt(large_limbs);
+    std::vector<Chunk> largeLimbs(17000, 42);
+    BigUInt largeNum = createTestBigUInt(largeLimbs);
     BigUInt zero = createTestBigUInt({});
 
-    BigUInt result = mul(large_num, zero);
+    BigUInt result = mul(largeNum, zero);
 
     EXPECT_TRUE(isEqual(result, zero));
 }
