@@ -10,11 +10,15 @@ struct BigUInt {
     std::vector<Chunk> limbs;
 };
 
+BigUInt makeZero();
+
 BigUInt add(const BigUInt& augend, const BigUInt& addend);
 
 BigUInt sub(const BigUInt& minuend, const BigUInt& subtrahend);
 
 BigUInt mul(const BigUInt& multiplicand, const BigUInt& multiplier);
+
+bool isZero(const BigUInt& number);
 
 bool isEqual(const BigUInt& left, const BigUInt& right);
 
