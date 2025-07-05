@@ -32,5 +32,5 @@ void benchSub(benchmark::State& state) {
 }
 }  // namespace
 constexpr size_t MAX_SIZE = 5556;
-BENCHMARK(benchAdd)->Range(1, MAX_SIZE);
-BENCHMARK(benchSub)->Range(1, MAX_SIZE);
+BENCHMARK(benchAdd)->Range(1, MAX_SIZE);  // NOLINT(cert-err58-cpp)
+BENCHMARK(benchSub)->Range(1, MAX_SIZE);  // NOLINT(cert-err58-cpp)

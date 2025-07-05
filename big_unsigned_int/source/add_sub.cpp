@@ -55,7 +55,7 @@ BigUInt addInternal(const BigUInt& augend, const BigUInt& addend, size_t shift =
                           static_cast<__uint128_t>(rightChunk) + static_cast<__uint128_t>(carry);
 
         result.push_back(static_cast<Chunk>(sum));
-        carry = static_cast<Chunk>(sum >> 64);
+        carry = static_cast<Chunk>(sum >> (uint)64);
     }
 
     if (carry != 0) {
@@ -90,13 +90,13 @@ BigUInt subInternal(const BigUInt& minuend, const BigUInt& subtrahend, size_t sh
         }
 
         if (borrow > leftChunk) {
-            result.push_back(static_cast<Chunk>((static_cast<__uint128_t>(1) << 64) + leftChunk -
-                                                rightChunk - borrow));
+            result.push_back(static_cast<Chunk>((static_cast<__uint128_t>(1) << (uint)64) +
+                                                leftChunk - rightChunk - borrow));
             borrow = 1;
         } else {
             leftChunk -= borrow;
             if (leftChunk < rightChunk) {
-                result.push_back(static_cast<Chunk>((static_cast<__uint128_t>(1) << 64) +
+                result.push_back(static_cast<Chunk>((static_cast<__uint128_t>(1) << (uint)64) +
                                                     leftChunk - rightChunk));
                 borrow = 1;
             } else {
