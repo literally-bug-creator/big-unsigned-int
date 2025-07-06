@@ -7,7 +7,6 @@ namespace big_uint {
 namespace {
 using MulChunk = __uint128_t;
 constexpr size_t LARGE_BYTE_LENGTH = 10000;
-constexpr size_t CHUNK_BITS = sizeof(Chunk) * 8;
 constexpr uint64_t NTT_MOD = 998244353ULL;
 constexpr uint64_t NTT_ROOT = 3ULL;
 
@@ -33,8 +32,8 @@ BigUInt simpleMul(const BigUInt& multiplicand, const BigUInt& multiplier) {
         for (size_t j = 0; j < rhsSize; j++) {
             MulChunk product =
                 (static_cast<MulChunk>(lhsLimbs[i]) * rhsLimbs[j]) + limbs[i + j] + carry;
-            limbs[i + j] = static_cast<Chunk>(product);
-            carry = static_cast<Chunk>(product >> CHUNK_BITS);
+            limbs[i + j] = static_cast<Chunk>(product % (MAX_VALUE + 1));
+            carry = static_cast<Chunk>(product / (MAX_VALUE + 1));
         }
         if (carry > 0) {
             limbs[i + rhsSize] += carry;

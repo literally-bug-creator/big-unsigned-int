@@ -49,7 +49,7 @@ TEST_F(BigUIntAddSub, AddSingleChunks) {
 }
 
 TEST_F(BigUIntAddSub, AddWithCarry) {
-    BigUInt lhs = createTestBigUInt({UINT64_MAX});
+    BigUInt lhs = createTestBigUInt({MAX_VALUE});
     BigUInt rhs = createTestBigUInt({1});
     BigUInt expected = createTestBigUInt({0, 1});
 
@@ -69,7 +69,7 @@ TEST_F(BigUIntAddSub, AddLargeNumbers) {
 }
 
 TEST_F(BigUIntAddSub, AddMultipleCarries) {
-    BigUInt lhs = createTestBigUInt({UINT64_MAX, UINT64_MAX});
+    BigUInt lhs = createTestBigUInt({MAX_VALUE, MAX_VALUE});
     BigUInt rhs = createTestBigUInt({1});
     BigUInt expected = createTestBigUInt({0, 0, 1});
 
@@ -162,7 +162,7 @@ TEST_F(BigUIntAddSub, SubSingleChunks) {
 TEST_F(BigUIntAddSub, SubWithBorrow) {
     BigUInt lhs = createTestBigUInt({0, 1});
     BigUInt rhs = createTestBigUInt({1});
-    BigUInt expected = createTestBigUInt({UINT64_MAX});
+    BigUInt expected = createTestBigUInt({MAX_VALUE});
 
     BigUInt result = sub(lhs, rhs);
 
@@ -202,7 +202,7 @@ TEST_F(BigUIntAddSub, SubLargerFromSmaller) {
 TEST_F(BigUIntAddSub, SubMultipleBorrows) {
     BigUInt lhs = createTestBigUInt({0, 0, 1});
     BigUInt rhs = createTestBigUInt({1});
-    BigUInt expected = createTestBigUInt({UINT64_MAX, UINT64_MAX});
+    BigUInt expected = createTestBigUInt({MAX_VALUE, MAX_VALUE});
 
     BigUInt result = sub(lhs, rhs);
 
@@ -210,9 +210,9 @@ TEST_F(BigUIntAddSub, SubMultipleBorrows) {
 }
 
 TEST_F(BigUIntAddSub, SubMaxChunk) {
-    BigUInt lhs = createTestBigUInt({UINT64_MAX});
+    BigUInt lhs = createTestBigUInt({MAX_VALUE});
     BigUInt rhs = createTestBigUInt({1});
-    BigUInt expected = createTestBigUInt({UINT64_MAX - 1});
+    BigUInt expected = createTestBigUInt({MAX_VALUE - 1});
 
     BigUInt result = sub(lhs, rhs);
 
@@ -253,15 +253,15 @@ TEST_F(BigUIntAddSub, SubAddIdentity) {
 }
 
 TEST_F(BigUIntAddSub, EdgeCaseMaxValues) {
-    BigUInt maxSingle = createTestBigUInt({UINT64_MAX});
-    BigUInt maxDouble = createTestBigUInt({UINT64_MAX, UINT64_MAX});
+    BigUInt maxSingle = createTestBigUInt({MAX_VALUE});
+    BigUInt maxDouble = createTestBigUInt({MAX_VALUE, MAX_VALUE});
 
     BigUInt result = add(maxSingle, maxSingle);
-    BigUInt expected = createTestBigUInt({UINT64_MAX - 1, 1});
+    BigUInt expected = createTestBigUInt({MAX_VALUE - 1, 1});
     EXPECT_TRUE(isEqual(result, expected));
 
     BigUInt subResult = sub(maxDouble, maxSingle);
-    BigUInt subExpected = createTestBigUInt({0, UINT64_MAX});
+    BigUInt subExpected = createTestBigUInt({0, MAX_VALUE});
     EXPECT_TRUE(isEqual(subResult, subExpected));
 }
 
@@ -357,9 +357,9 @@ TEST_F(BigUIntAddSub, AddWithShiftNumberToZero) {
 }
 
 TEST_F(BigUIntAddSub, AddWithShiftCarry) {
-    BigUInt lhs = createTestBigUInt({UINT64_MAX});
+    BigUInt lhs = createTestBigUInt({MAX_VALUE});
     BigUInt rhs = createTestBigUInt({1});
-    BigUInt expected = createTestBigUInt({1, UINT64_MAX});
+    BigUInt expected = createTestBigUInt({1, MAX_VALUE});
 
     BigUInt result = add(lhs, rhs, 1);
 
@@ -379,7 +379,7 @@ TEST_F(BigUIntAddSub, SubWithShiftZero) {
 TEST_F(BigUIntAddSub, SubWithShiftOne) {
     BigUInt lhs = createTestBigUInt({1, 1});
     BigUInt rhs = createTestBigUInt({1});
-    BigUInt expected = createTestBigUInt({UINT64_MAX, 0, 1});
+    BigUInt expected = createTestBigUInt({MAX_VALUE, 0, 1});
 
     BigUInt result = sub(lhs, rhs, 1);
 
