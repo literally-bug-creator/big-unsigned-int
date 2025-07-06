@@ -1,6 +1,7 @@
 #include <vector>
 
 #include "big_uint.hpp"
+#include "constants.hpp"
 
 namespace big_uint {
 

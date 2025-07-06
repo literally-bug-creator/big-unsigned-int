@@ -5,6 +5,9 @@
 
 using namespace big_uint;
 
+constexpr uint64_t MAX_VALUE = 9999999999999999999ULL;
+constexpr uint16_t MAX_VALUE_LENGTH = 19;
+
 class BigUIntAddSub : public ::testing::Test {};
 
 // Addition Tests

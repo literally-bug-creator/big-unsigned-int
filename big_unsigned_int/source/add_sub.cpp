@@ -2,6 +2,7 @@
 #include <cstddef>
 
 #include "big_uint.hpp"
+#include "constants.hpp"
 #include "getters.hpp"
 
 namespace big_uint {

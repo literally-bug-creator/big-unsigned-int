@@ -1,6 +1,7 @@
 #include <string>
 
 #include "big_uint.hpp"
+#include "constants.hpp"
 
 namespace big_uint {
 std::string toString(const BigUInt& number) {
