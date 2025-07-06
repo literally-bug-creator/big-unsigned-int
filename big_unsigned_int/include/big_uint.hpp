@@ -5,14 +5,19 @@
 #include <vector>
 
 namespace big_uint {
-using Chunk = uint64_t;
 using std::string;
+
+using Chunk = uint64_t;
+using Digit = uint8_t;
+
 constexpr uint64_t MAX_VALUE = 9999999999999999999ULL;
 constexpr uint16_t MAX_VALUE_LENGTH = 19;
 
 struct BigUInt {
     std::vector<Chunk> limbs;
 };
+
+BigUInt makeBigUInt(const std::vector<Digit>& digits);
 
 BigUInt makeZero();
 
