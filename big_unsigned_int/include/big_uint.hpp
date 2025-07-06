@@ -22,6 +22,8 @@ BigUInt sub(const BigUInt& minuend, const BigUInt& subtrahend, size_t shift);
 
 BigUInt mul(const BigUInt& multiplicand, const BigUInt& multiplier);
 
+size_t getSize(const BigUInt& number);
+
 bool isZero(const BigUInt& number);
 
 bool isEqual(const BigUInt& left, const BigUInt& right);
