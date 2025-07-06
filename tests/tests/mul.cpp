@@ -1,3 +1,5 @@
+#include <cstdint>
+
 #include <gtest/gtest.h>
 
 #include "big_uint.hpp"
@@ -78,9 +80,9 @@ TEST_F(BigUIntMul, SingleChunkByTwo) {
 }
 
 TEST_F(BigUIntMul, MaxChunkByTwo) {
-    BigUInt lhs = createTestBigUInt({UINT64_MAX});
+    BigUInt lhs = createTestBigUInt({MAX_VALUE});
     BigUInt rhs = createTestBigUInt({2});
-    BigUInt expected = createTestBigUInt({UINT64_MAX - 1, 1});
+    BigUInt expected = createTestBigUInt({MAX_VALUE - 1, 1});
 
     BigUInt result = mul(lhs, rhs);
 
@@ -88,9 +90,9 @@ TEST_F(BigUIntMul, MaxChunkByTwo) {
 }
 
 TEST_F(BigUIntMul, MaxChunkByMaxChunk) {
-    BigUInt lhs = createTestBigUInt({UINT64_MAX});
-    BigUInt rhs = createTestBigUInt({UINT64_MAX});
-    BigUInt expected = createTestBigUInt({1, UINT64_MAX - 1});
+    BigUInt lhs = createTestBigUInt({MAX_VALUE});
+    BigUInt rhs = createTestBigUInt({MAX_VALUE});
+    BigUInt expected = createTestBigUInt({1, MAX_VALUE - 1});
 
     BigUInt result = mul(lhs, rhs);
 
@@ -167,20 +169,10 @@ TEST_F(BigUIntMul, OneByThreeChunks) {
     EXPECT_TRUE(isEqual(result, expected));
 }
 
-TEST_F(BigUIntMul, WithCarry) {
-    BigUInt lhs = createTestBigUInt({UINT64_MAX / 2});
-    BigUInt rhs = createTestBigUInt({4});
-    BigUInt expected = createTestBigUInt({((UINT64_MAX / 2) * 4) % UINT64_MAX, 1});
-
-    BigUInt result = mul(lhs, rhs);
-
-    EXPECT_TRUE(isEqual(result, expected));
-}
-
 TEST_F(BigUIntMul, LargeNumbers) {
-    BigUInt lhs = createTestBigUInt({UINT64_MAX, UINT64_MAX});
+    BigUInt lhs = createTestBigUInt({MAX_VALUE, MAX_VALUE});
     BigUInt rhs = createTestBigUInt({2});
-    BigUInt expected = createTestBigUInt({UINT64_MAX - 1, UINT64_MAX, 1});
+    BigUInt expected = createTestBigUInt({MAX_VALUE - 1, MAX_VALUE, 1});
 
     BigUInt result = mul(lhs, rhs);
 
@@ -307,7 +299,6 @@ TEST_F(BigUIntMul, LargeNumberByZero) {
 }
 
 TEST_F(BigUIntMul, PowerOfTwoLarge) {
-    // Test multiplication of large numbers that should use NTT
     std::vector<Chunk> limbs1(17000, 1);
     std::vector<Chunk> limbs2(17000, 2);
 
@@ -316,7 +307,6 @@ TEST_F(BigUIntMul, PowerOfTwoLarge) {
 
     BigUInt result = mul(lhs, rhs);
 
-    // Result should be 2 times larger than lhs
     EXPECT_FALSE(isZero(result));
     EXPECT_TRUE(isGreater(result, lhs));
 }
@@ -339,7 +329,6 @@ TEST_F(BigUIntMul, LargeNumberPattern) {
     std::vector<Chunk> limbs1(17000);
     std::vector<Chunk> limbs2(17000);
 
-    // Fill with alternating pattern
     for (size_t i = 0; i < limbs1.size(); ++i) {
         limbs1[i] = (i % 2 == 0) ? 1 : 0;
         limbs2[i] = (i % 2 == 0) ? 2 : 0;

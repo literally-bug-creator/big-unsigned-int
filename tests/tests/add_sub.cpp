@@ -357,9 +357,9 @@ TEST_F(BigUIntAddSub, AddWithShiftNumberToZero) {
 }
 
 TEST_F(BigUIntAddSub, AddWithShiftCarry) {
-    BigUInt lhs = createTestBigUInt({UINT64_MAX});
+    BigUInt lhs = createTestBigUInt({MAX_VALUE});
     BigUInt rhs = createTestBigUInt({1});
-    BigUInt expected = createTestBigUInt({1, UINT64_MAX});
+    BigUInt expected = createTestBigUInt({1, MAX_VALUE});
 
     BigUInt result = add(lhs, rhs, 1);
 
