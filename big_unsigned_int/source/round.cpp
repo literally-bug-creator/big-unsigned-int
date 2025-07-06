@@ -16,7 +16,7 @@ std::vector<Chunk> removeLeadingLimbs(const std::vector<Chunk>& limbs, size_t am
 }
 }  // namespace
 BigUInt round(const BigUInt& number, size_t newSize) {
-    size_t numberLength = getLength(number);
+    size_t numberLength = getSize(number);
     if (newSize >= numberLength) {
         return number;
     }

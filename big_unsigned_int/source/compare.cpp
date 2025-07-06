@@ -12,8 +12,8 @@ enum class Comparison : int8_t {
 };
 
 Comparison compareByLength(const BigUInt& lhs, const BigUInt& rhs) {
-    const size_t LHS_LENGTH = getLength(lhs);
-    const size_t RHS_LENGTH = getLength(rhs);
+    const size_t LHS_LENGTH = getSize(lhs);
+    const size_t RHS_LENGTH = getSize(rhs);
 
     if (LHS_LENGTH > RHS_LENGTH) {
         return Comparison::GREATER;
@@ -30,7 +30,7 @@ Comparison compare(const BigUInt& lhs, const BigUInt& rhs) {
     if (byLength != Comparison::EQUAL) {
         return byLength;
     }
-    for (size_t index = getLength(lhs); index-- > 0;) {
+    for (size_t index = getSize(lhs); index-- > 0;) {
         Chunk lhsChunk = getChunk(lhs, index);
         Chunk rhsChunk = getChunk(rhs, index);
 

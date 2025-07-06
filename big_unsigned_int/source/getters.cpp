@@ -6,18 +6,18 @@ namespace big_uint {
 constexpr Chunk ZERO = 0;
 
 bool isZero(const BigUInt& number) {
-    if (getLength(number) == 0) {
+    if (getSize(number) == 0) {
         return true;
     }
-    return (getLength(number) == 1) && (getChunk(number, 0) == 0);
+    return (getSize(number) == 1) && (getChunk(number, 0) == 0);
 }
 
-size_t getLength(const BigUInt& number) {
+size_t getSize(const BigUInt& number) {
     return number.limbs.size();
 }
 
 size_t getByteLength(const BigUInt& number) {
-    size_t limbAmount = getLength(number);
+    size_t limbAmount = getSize(number);
     if (limbAmount > SIZE_MAX / sizeof(Chunk)) {
         return SIZE_MAX;
     }
