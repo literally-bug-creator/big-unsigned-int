@@ -1,10 +1,12 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 namespace big_uint {
 using Chunk = uint64_t;
+using std::string;
 constexpr uint64_t MAX_VALUE = 9999999999999999999ULL;
 constexpr uint16_t MAX_VALUE_LENGTH = 19;
 
@@ -25,6 +27,8 @@ BigUInt sub(const BigUInt& minuend, const BigUInt& subtrahend, size_t shift);
 BigUInt mul(const BigUInt& multiplicand, const BigUInt& multiplier);
 
 size_t getSize(const BigUInt& number);
+
+string toString(const BigUInt& number);
 
 bool isZero(const BigUInt& number);
 
