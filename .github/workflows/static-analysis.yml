@@ -2,9 +2,9 @@ name: Static Analysis
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   static-analysis:
@@ -12,18 +12,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-    - name: Setup build environment
-      run: |
-        # Use pre-installed clang from ubuntu-latest
-        which clang++ || echo "clang++ not found"
-        which clang-tidy || echo "clang-tidy not found"
-        clang++ --version
-        clang-tidy --version
+      - name: Setup build environment
+        run: |
+          which clang++ || echo "clang++ not found"
+          which clang-tidy || echo "clang-tidy not found"
+          clang++ --version
+          clang-tidy --version
 
-    - name: Run static analysis
-      run: make static-analysis
+      - name: Cache ccache
+        uses: actions/cache@v3
+        with:
+          path: ~/.ccache
+          key: ${{ runner.os }}-ccache-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-ccache-
+
+      - name: Run static analysis
+        run: make static-analysis

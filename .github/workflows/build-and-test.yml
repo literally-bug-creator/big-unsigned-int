@@ -2,9 +2,9 @@ name: Build and Test
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-test:
@@ -12,17 +12,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-    - name: Setup build environment
-      run: |
-        # Use pre-installed clang from ubuntu-latest
-        which clang++ || echo "clang++ not found"
-        clang++ --version
-        cmake --version
+      - name: Setup build environment
+        run: |
+          which clang++ || echo "clang++ not found"
+          clang++ --version
+          cmake --version
 
-    - name: Build and test
-      run: make debug && make test
+      - name: Cache ccache
+        uses: actions/cache@v3
+        with:
+          path: ~/.ccache
+          key: ${{ runner.os }}-ccache-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-ccache-
+
+      - name: Build and test
+        run: make debug && make test

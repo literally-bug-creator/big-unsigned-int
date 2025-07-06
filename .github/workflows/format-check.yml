@@ -2,9 +2,9 @@ name: Format Check
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   format-check:
@@ -12,14 +12,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup build environment
-      run: |
-        # Use pre-installed clang-format from ubuntu-latest
-        which clang-format || echo "clang-format not found"
-        clang-format --version
+      - name: Setup build environment
+        run: |
+          which clang-format || echo "clang-format not found"
+          clang-format --version
 
-    - name: Check formatting
-      run: make format-check
+      - name: Cache ccache
+        uses: actions/cache@v3
+        with:
+          path: ~/.ccache
+          key: ${{ runner.os }}-ccache-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-ccache-
+
+      - name: Check formatting
+        run: make format-check
