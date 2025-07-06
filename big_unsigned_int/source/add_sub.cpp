@@ -44,8 +44,13 @@ BigUInt addInternal(const BigUInt& augend, const BigUInt& addend, size_t shift =
         }
         __uint128_t sum = static_cast<__uint128_t>(leftChunk) +
                           static_cast<__uint128_t>(rightChunk) + static_cast<__uint128_t>(carry);
-        result.push_back(static_cast<Chunk>(sum));
-        carry = static_cast<Chunk>(sum > MAX_VALUE);
+        if (sum > MAX_VALUE) {
+            result.push_back(static_cast<Chunk>(sum - MAX_VALUE - 1));
+            carry = 1;
+        } else {
+            result.push_back(static_cast<Chunk>(sum));
+            carry = 0;
+        }
     }
     if (carry != 0) {
         result.push_back(carry);
@@ -72,14 +77,12 @@ BigUInt subInternal(const BigUInt& minuend, const BigUInt& subtrahend, size_t sh
             leftChunk = leftLimbs[i - shift];
         }
         if (borrow > leftChunk) {
-            result.push_back(static_cast<Chunk>((static_cast<__uint128_t>(1) << (uint)64) +
-                                                leftChunk - rightChunk - borrow));
+            result.push_back(static_cast<Chunk>(MAX_VALUE + 1 + leftChunk - rightChunk - borrow));
             borrow = 1;
         } else {
             leftChunk -= borrow;
             if (leftChunk < rightChunk) {
-                result.push_back(static_cast<Chunk>((static_cast<__uint128_t>(1) << (uint)64) +
-                                                    leftChunk - rightChunk));
+                result.push_back(static_cast<Chunk>(MAX_VALUE + 1 + leftChunk - rightChunk));
                 borrow = 1;
             } else {
                 result.push_back(leftChunk - rightChunk);
