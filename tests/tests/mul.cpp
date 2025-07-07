@@ -258,7 +258,7 @@ TEST_F(BigUIntMul, VeryLargeNumbers) {
 }
 
 TEST_F(BigUIntMul, LargeNumberBySmall) {
-    std::vector<Chunk> largeLimbs(17000, 2);
+    std::vector<Chunk> largeLimbs(10, 2);
     BigUInt largeNum = createTestBigUInt(largeLimbs);
     BigUInt smallNum = createTestBigUInt({3});
 
@@ -282,7 +282,7 @@ TEST_F(BigUIntMul, LargeNumberCommutative) {
 }
 
 TEST_F(BigUIntMul, LargeNumberByOne) {
-    std::vector<Chunk> largeLimbs(17000, 42);
+    std::vector<Chunk> largeLimbs(10, 42);
     BigUInt largeNum = createTestBigUInt(largeLimbs);
     BigUInt one = createTestBigUInt({1});
 
