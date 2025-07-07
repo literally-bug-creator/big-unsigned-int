@@ -12,14 +12,14 @@ std::vector<Chunk> removeLeadingZeros(const std::vector<Chunk>& limbs) {
     if (limbs.empty()) {
         return {};
     }
-    auto lastNonZero = static_cast<int64_t>(-1);
-    for (int64_t i = static_cast<int64_t>(limbs.size()) - 1; i >= 0; --i) {
-        if (limbs[static_cast<size_t>(i)] != 0) {
+    auto lastNonZero = static_cast<int64_t>(-ONE);
+    for (int64_t i = static_cast<int64_t>(limbs.size()) - ONE; i >= ZERO; --i) {
+        if (limbs[static_cast<size_t>(i)] != ZERO) {
             lastNonZero = i;
             break;
         }
     }
-    if (lastNonZero == -1) {
+    if (lastNonZero == -ONE) {
         return {};
     }
     return {limbs.begin(), limbs.begin() + lastNonZero + 1};
@@ -35,9 +35,9 @@ BigUInt addInternal(const BigUInt& augend, const BigUInt& addend, size_t shift =
         return makeZero();
     }
     std::vector<Chunk> result;
-    result.reserve(maxSize + 1);
-    Chunk carry = 0;
-    for (size_t i = 0; i < maxSize; ++i) {
+    result.reserve(maxSize + ONE);
+    Chunk carry = ZERO;
+    for (size_t i = ZERO; i < maxSize; ++i) {
         Chunk leftChunk = 0;
         Chunk rightChunk = (i < rightSize) ? rightLimbs[i] : 0;
         if (i >= shift && (i - shift) < leftSize) {
@@ -46,7 +46,7 @@ BigUInt addInternal(const BigUInt& augend, const BigUInt& addend, size_t shift =
         __uint128_t sum = static_cast<__uint128_t>(leftChunk) +
                           static_cast<__uint128_t>(rightChunk) + static_cast<__uint128_t>(carry);
         if (sum > MAX_VALUE) {
-            result.push_back(static_cast<Chunk>(sum - MAX_VALUE - 1));
+            result.push_back(static_cast<Chunk>(sum - MAX_VALUE - ONE));
             carry = 1;
         } else {
             result.push_back(static_cast<Chunk>(sum));
@@ -78,13 +78,13 @@ BigUInt subInternal(const BigUInt& minuend, const BigUInt& subtrahend, size_t sh
             leftChunk = leftLimbs[i - shift];
         }
         if (borrow > leftChunk) {
-            result.push_back(static_cast<Chunk>(MAX_VALUE + 1 + leftChunk - rightChunk - borrow));
-            borrow = 1;
+            result.push_back(static_cast<Chunk>(MAX_VALUE + ONE + leftChunk - rightChunk - borrow));
+            borrow = ONE;
         } else {
             leftChunk -= borrow;
             if (leftChunk < rightChunk) {
-                result.push_back(static_cast<Chunk>(MAX_VALUE + 1 + leftChunk - rightChunk));
-                borrow = 1;
+                result.push_back(static_cast<Chunk>(MAX_VALUE + ONE + leftChunk - rightChunk));
+                borrow = ONE;
             } else {
                 result.push_back(leftChunk - rightChunk);
                 borrow = 0;

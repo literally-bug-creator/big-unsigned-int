@@ -14,13 +14,13 @@ BigUInt makeBigUInt(const std::vector<Digit>& digits) {
     const size_t CHUNK_SIZE = MAX_VALUE_LENGTH;
     size_t total = digits.size();
 
-    while (total > 0) {
+    while (total > ZERO) {
         size_t blockSize = (total >= CHUNK_SIZE) ? CHUNK_SIZE : total;
         size_t start = total - blockSize;
-        Chunk value = 0;
+        Chunk value = ZERO;
 
         for (size_t i = start; i < total; ++i) {
-            value = value * 10 + static_cast<Chunk>(digits[i]);
+            value = value * TEN + static_cast<Chunk>(digits[i]);
         }
 
         limbs.push_back(value);

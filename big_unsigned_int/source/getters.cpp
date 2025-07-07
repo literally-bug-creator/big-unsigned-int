@@ -1,15 +1,15 @@
 #include "getters.hpp"
 
 #include "big_uint.hpp"
+#include "constants.hpp"
 
 namespace big_uint {
-constexpr Chunk ZERO = 0;
 
 bool isZero(const BigUInt& number) {
-    if (getSize(number) == 0) {
+    if (getSize(number) == ZERO) {
         return true;
     }
-    return (getSize(number) == 1) && (getChunk(number, 0) == 0);
+    return (getSize(number) == ONE) && (getChunk(number, ZERO) == ZERO);
 }
 
 size_t getSize(const BigUInt& number) {
@@ -26,7 +26,7 @@ size_t getByteLength(const BigUInt& number) {
 
 Chunk getChunk(const BigUInt& number, size_t index) {
     if (index >= number.limbs.size()) {
-        return ZERO;
+        return ZERO_CHUNK;
     }
     return number.limbs[index];
 }

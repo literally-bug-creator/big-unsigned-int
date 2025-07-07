@@ -1,6 +1,7 @@
 #include <cstdint>
 
 #include "big_uint.hpp"
+#include "constants.hpp"
 #include "getters.hpp"
 
 namespace big_uint {
@@ -30,7 +31,7 @@ Comparison compare(const BigUInt& lhs, const BigUInt& rhs) {
     if (byLength != Comparison::EQUAL) {
         return byLength;
     }
-    for (size_t index = getSize(lhs); index-- > 0;) {
+    for (size_t index = getSize(lhs); index-- > ZERO;) {
         Chunk lhsChunk = getChunk(lhs, index);
         Chunk rhsChunk = getChunk(rhs, index);
 

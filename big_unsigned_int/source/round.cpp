@@ -1,12 +1,13 @@
 #include <cstdint>
 
 #include "big_uint.hpp"
+#include "constants.hpp"
 #include "getters.hpp"
 
 namespace big_uint {
 namespace {
 std::vector<Chunk> removeLeadingLimbs(const std::vector<Chunk>& limbs, size_t amount) {
-    if (amount == 0) {
+    if (amount == ZERO) {
         return limbs;
     }
     if (amount >= limbs.size()) {
