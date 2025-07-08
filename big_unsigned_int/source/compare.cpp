@@ -31,13 +31,13 @@ Comparison compare(const BigUInt& lhs, const BigUInt& rhs) {
         return byLength;
     }
     for (size_t index = getSize(lhs); index-- > 0;) {
-        Chunk lhsChunk = getChunk(lhs, index);
-        Chunk rhsChunk = getChunk(rhs, index);
+        Chunk lhsLimb = getLimb(lhs, index);
+        Chunk rhsLimb = getLimb(rhs, index);
 
-        if (lhsChunk > rhsChunk) {
+        if (lhsLimb > rhsLimb) {
             return Comparison::GREATER;
         }
-        if (lhsChunk < rhsChunk) {
+        if (lhsLimb < rhsLimb) {
             return Comparison::LOWER;
         }
     }
