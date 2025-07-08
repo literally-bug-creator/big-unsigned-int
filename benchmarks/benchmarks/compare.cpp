@@ -8,11 +8,11 @@ namespace {
 void benchIsEqual(benchmark::State& state) {
     auto range = static_cast<size_t>(state.range(0));
     Chunk maxValue = 999999999999999999;
-    std::vector<Chunk> lhsChunks(range, maxValue);
-    std::vector<Chunk> rhsChunks(range, maxValue);
+    std::vector<Chunk> lhsLimbs(range, maxValue);
+    std::vector<Chunk> rhsLimbs(range, maxValue);
 
-    BigUInt lhs = createTestBigUInt(lhsChunks);
-    BigUInt rhs = createTestBigUInt(rhsChunks);
+    BigUInt lhs = createTestBigUInt(lhsLimbs);
+    BigUInt rhs = createTestBigUInt(rhsLimbs);
 
     for (auto iter : state) {
         isEqual(lhs, rhs);
@@ -22,11 +22,11 @@ void benchIsEqual(benchmark::State& state) {
 void benchIsGreater(benchmark::State& state) {
     auto range = static_cast<size_t>(state.range(0));
     Chunk maxValue = 999999999999999999;
-    std::vector<Chunk> lhsChunks(range, maxValue);
-    std::vector<Chunk> rhsChunks(range, maxValue);
+    std::vector<Chunk> lhsLimbs(range, maxValue);
+    std::vector<Chunk> rhsLimbs(range, maxValue);
 
-    BigUInt lhs = createTestBigUInt(lhsChunks);
-    BigUInt rhs = createTestBigUInt(rhsChunks);
+    BigUInt lhs = createTestBigUInt(lhsLimbs);
+    BigUInt rhs = createTestBigUInt(rhsLimbs);
 
     for (auto iter : state) {
         isGreater(lhs, rhs);
@@ -36,11 +36,11 @@ void benchIsGreater(benchmark::State& state) {
 void benchIsLower(benchmark::State& state) {
     auto range = static_cast<size_t>(state.range(0));
     Chunk maxValue = 999999999999999999;
-    std::vector<Chunk> lhsChunks(range, maxValue);
-    std::vector<Chunk> rhsChunks(range, maxValue);
+    std::vector<Chunk> lhsLimbs(range, maxValue);
+    std::vector<Chunk> rhsLimbs(range, maxValue);
 
-    BigUInt lhs = createTestBigUInt(lhsChunks);
-    BigUInt rhs = createTestBigUInt(rhsChunks);
+    BigUInt lhs = createTestBigUInt(lhsLimbs);
+    BigUInt rhs = createTestBigUInt(rhsLimbs);
 
     for (auto iter : state) {
         isLower(lhs, rhs);
@@ -50,11 +50,11 @@ void benchIsLower(benchmark::State& state) {
 void benchIsGreaterOrEqual(benchmark::State& state) {
     auto range = static_cast<size_t>(state.range(0));
     Chunk maxValue = 999999999999999999;
-    std::vector<Chunk> lhsChunks(range, maxValue);
-    std::vector<Chunk> rhsChunks(range, maxValue);
+    std::vector<Chunk> lhsLimbs(range, maxValue);
+    std::vector<Chunk> rhsLimbs(range, maxValue);
 
-    BigUInt lhs = createTestBigUInt(lhsChunks);
-    BigUInt rhs = createTestBigUInt(rhsChunks);
+    BigUInt lhs = createTestBigUInt(lhsLimbs);
+    BigUInt rhs = createTestBigUInt(rhsLimbs);
 
     for (auto iter : state) {
         isGreaterOrEqual(lhs, rhs);
@@ -64,11 +64,11 @@ void benchIsGreaterOrEqual(benchmark::State& state) {
 void benchIsLowerOrEqual(benchmark::State& state) {
     auto range = static_cast<size_t>(state.range(0));
     Chunk maxValue = 999999999999999999;
-    std::vector<Chunk> lhsChunks(range, maxValue);
-    std::vector<Chunk> rhsChunks(range, maxValue);
+    std::vector<Chunk> lhsLimbs(range, maxValue);
+    std::vector<Chunk> rhsLimbs(range, maxValue);
 
-    BigUInt lhs = createTestBigUInt(lhsChunks);
-    BigUInt rhs = createTestBigUInt(rhsChunks);
+    BigUInt lhs = createTestBigUInt(lhsLimbs);
+    BigUInt rhs = createTestBigUInt(rhsLimbs);
 
     for (auto iter : state) {
         isLowerOrEqual(lhs, rhs);
