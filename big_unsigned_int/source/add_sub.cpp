@@ -43,13 +43,12 @@ BigUInt addInternal(const BigUInt& augend, const BigUInt& addend, size_t shift =
         if (i >= shift && (i - shift) < leftSize) {
             leftChunk = leftLimbs[i - shift];
         }
-        __uint128_t sum = static_cast<__uint128_t>(leftChunk) +
-                          static_cast<__uint128_t>(rightChunk) + static_cast<__uint128_t>(carry);
+        Chunk sum = leftChunk + rightChunk + carry;
         if (sum > MAX_VALUE) {
-            result.push_back(static_cast<Chunk>(sum - MAX_VALUE - ONE));
+            result.push_back(sum - MAX_VALUE - ONE);
             carry = 1;
         } else {
-            result.push_back(static_cast<Chunk>(sum));
+            result.push_back(sum);
             carry = 0;
         }
     }

@@ -10,6 +10,10 @@ using std::string;
 using Chunk = uint64_t;
 using Digit = uint8_t;
 
+constexpr uint64_t MAX_VALUE = 999999999999999999ULL;
+constexpr uint16_t MAX_VALUE_LENGTH = 18;
+constexpr uint64_t MAX_VALUE_TEN = 1000000000000000000ULL;
+
 struct BigUInt {
     std::vector<Chunk> limbs;
 };
@@ -32,6 +36,8 @@ size_t getSize(const BigUInt& number);
 
 string toString(const BigUInt& number);
 
+BigUInt shiftLeft(const BigUInt& number, size_t shift);
+
 bool isZero(const BigUInt& number);
 
 bool isEqual(const BigUInt& left, const BigUInt& right);
@@ -47,5 +53,7 @@ bool isLowerOrEqual(const BigUInt& left, const BigUInt& right);
 BigUInt trim(const BigUInt& number);
 
 BigUInt round(const BigUInt& number, size_t newSize);
+
+std::string test(std::vector<uint64_t> digits);
 
 }  // namespace big_uint

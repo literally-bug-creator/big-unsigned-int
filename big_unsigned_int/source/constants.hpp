@@ -4,9 +4,6 @@
 #include "big_uint.hpp"
 
 namespace big_uint {
-constexpr uint64_t MAX_VALUE = 9999999999999999999ULL;
-constexpr uint16_t MAX_VALUE_LENGTH = 19;
-
 constexpr Chunk ZERO_CHUNK = 0;
 
 constexpr uint8_t ZERO = 0;

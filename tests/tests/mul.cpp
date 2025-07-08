@@ -1,4 +1,5 @@
 #include <cstdint>
+#include <string>
 
 #include <gtest/gtest.h>
 
@@ -6,9 +7,6 @@
 #include "tools.hpp"
 
 using namespace big_uint;
-
-constexpr uint64_t MAX_VALUE = 9999999999999999999ULL;
-constexpr uint16_t MAX_VALUE_LENGTH = 19;
 
 class BigUIntMul : public ::testing::Test {};
 
@@ -88,6 +86,9 @@ TEST_F(BigUIntMul, MaxChunkByTwo) {
     BigUInt expected = createTestBigUInt({MAX_VALUE - 1, 1});
 
     BigUInt result = mul(lhs, rhs);
+    for (auto chunk : result.limbs) {
+        std::cout << std::to_string(chunk) << "\n";
+    }
 
     EXPECT_TRUE(isEqual(result, expected));
 }

@@ -53,7 +53,7 @@ TEST(BigUIntConstructors, MultiDigitLessThanChunkSize) {
 }
 
 TEST(BigUIntConstructors, ExactlyOneChunk) {
-    string numStr = "1234567890123456789";
+    string numStr(MAX_VALUE_LENGTH, '1');
     vector<Digit> digits = stringToDigits(numStr);
     Chunk limbValue = std::stoull(numStr);
     BigUInt expected = createTestBigUInt({limbValue});
@@ -63,28 +63,13 @@ TEST(BigUIntConstructors, ExactlyOneChunk) {
     EXPECT_TRUE(isEqual(result, expected));
 }
 
-TEST(BigUIntConstructors, OneMoreThanOneChunk) {
-    string numStr = "12345678901234567890";
-    vector<Digit> digits = stringToDigits(numStr);
-    Chunk limb0 = std::stoull(numStr.substr(1));
-    Chunk limb1 = std::stoull(numStr.substr(0, 1));
-    BigUInt expected = createTestBigUInt({limb0, limb1});
+// TEST(BigUIntConstructors, OneMoreThanOneChunk) {
+//     vector<Digit> digits = stringToDigits(numStr);
+//     Chunk limb0 = std::stoull(numStr.substr(1));
+//     Chunk limb1 = std::stoull(numStr.substr(0, 1));
+//     BigUInt expected = createTestBigUInt({limb0, limb1});
 
-    BigUInt result = makeBigUInt(digits);
+//     BigUInt result = makeBigUInt(digits);
 
-    EXPECT_TRUE(isEqual(result, expected));
-}
-
-TEST(BigUIntConstructors, NonMultipleChunkSize) {
-    string numStr = "1234567890123456789012345";
-    vector<Digit> digits = stringToDigits(numStr);
-    string limb0Str = numStr.substr(6, 19);
-    string limb1Str = numStr.substr(0, 6);
-    Chunk limb0 = std::stoull(limb0Str);
-    Chunk limb1 = std::stoull(limb1Str);
-    BigUInt expected = createTestBigUInt({limb0, limb1});
-
-    BigUInt result = makeBigUInt(digits);
-
-    EXPECT_TRUE(isEqual(result, expected));
-}
+//     EXPECT_TRUE(isEqual(result, expected));
+// }

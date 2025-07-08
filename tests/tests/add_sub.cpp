@@ -5,12 +5,8 @@
 
 using namespace big_uint;
 
-constexpr uint64_t MAX_VALUE = 9999999999999999999ULL;
-constexpr uint16_t MAX_VALUE_LENGTH = 19;
-
 class BigUIntAddSub : public ::testing::Test {};
 
-// Addition Tests
 TEST_F(BigUIntAddSub, AddZeroToZero) {
     BigUInt lhs = createTestBigUInt({});
     BigUInt rhs = createTestBigUInt({});
@@ -111,7 +107,6 @@ TEST_F(BigUIntAddSub, AddSimpleOverflow) {
     EXPECT_TRUE(isEqual(result, expected));
 }
 
-// Subtraction Tests
 TEST_F(BigUIntAddSub, SubZeroFromZero) {
     BigUInt lhs = createTestBigUInt({});
     BigUInt rhs = createTestBigUInt({});
@@ -222,7 +217,6 @@ TEST_F(BigUIntAddSub, SubMaxChunk) {
     EXPECT_TRUE(isEqual(result, expected));
 }
 
-// Combined Add/Sub Tests
 TEST_F(BigUIntAddSub, AddSubInverse) {
     BigUInt lhs = createTestBigUInt({123456789});
     BigUInt rhs = createTestBigUInt({987654321});
@@ -308,7 +302,6 @@ TEST_F(BigUIntAddSub, LargeNumbersSub) {
     EXPECT_TRUE(isGreater(result, rhs));
 }
 
-// Tests for shift operations
 TEST_F(BigUIntAddSub, AddWithShiftZero) {
     BigUInt lhs = createTestBigUInt({123});
     BigUInt rhs = createTestBigUInt({456});

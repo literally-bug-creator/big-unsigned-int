@@ -8,9 +8,6 @@
 using std::string;
 using std::to_string;
 
-constexpr uint64_t MAX_VALUE = 9999999999999999999ULL;
-constexpr uint16_t MAX_VALUE_LENGTH = 19;
-
 using namespace big_uint;
 namespace {
 string makeZerosString(size_t count) {
