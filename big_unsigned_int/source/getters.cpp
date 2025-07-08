@@ -9,7 +9,7 @@ bool isZero(const BigUInt& number) {
     if (getSize(number) == 0) {
         return true;
     }
-    return (getSize(number) == 1) && (getChunk(number, 0) == 0);
+    return (getSize(number) == 1) && (getLimb(number, 0) == 0);
 }
 
 size_t getSize(const BigUInt& number) {
@@ -24,7 +24,7 @@ size_t getByteLength(const BigUInt& number) {
     return limbAmount * sizeof(Chunk);
 }
 
-Chunk getChunk(const BigUInt& number, size_t index) {
+Chunk getLimb(const BigUInt& number, size_t index) {
     if (index >= number.limbs.size()) {
         return ZERO;
     }
