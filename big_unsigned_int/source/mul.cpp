@@ -1,4 +1,6 @@
 #include <cstddef>
+#include <cstdint>
+#include <cstdlib>
 
 #include "big_uint.hpp"
 #include "getters.hpp"
@@ -6,19 +8,23 @@
 namespace big_uint {
 namespace {
 using MulChunk = __uint128_t;
-constexpr size_t LARGE_BYTE_LENGTH = 10000;
-constexpr uint64_t NTT_MOD = 998244353ULL;
-constexpr uint64_t NTT_ROOT = 3ULL;
+constexpr size_t SIMPLE_THRESHOLD = 32;
+constexpr Chunk NTT_MOD = 9223372036737335297ULL;
+constexpr Chunk NTT_ROOT = 5ULL;
+constexpr uint SHIFT = 65;
+constexpr uint ZERO = 0;
+constexpr uint ONE = 1;
+constexpr uint TWO = 2;
 
 std::vector<Chunk> removeTrailingZeros(const std::vector<Chunk>& limbs) {
-    auto lastNonZero = static_cast<int64_t>(-1);
-    for (int64_t index = static_cast<int64_t>(limbs.size()) - 1; index >= 0; index--) {
-        if (limbs[static_cast<size_t>(index)] != 0) {
+    auto lastNonZero = static_cast<int64_t>(-ONE);
+    for (int64_t index = static_cast<int64_t>(limbs.size()) - ONE; index >= ZERO; index--) {
+        if (limbs[static_cast<size_t>(index)] != ZERO) {
             lastNonZero = index;
             break;
         }
     }
-    return {limbs.begin(), limbs.begin() + lastNonZero + 1};
+    return {limbs.begin(), limbs.begin() + lastNonZero + ONE};
 }
 
 BigUInt simpleMul(const BigUInt& multiplicand, const BigUInt& multiplier) {
@@ -26,44 +32,72 @@ BigUInt simpleMul(const BigUInt& multiplicand, const BigUInt& multiplier) {
     const std::vector<Chunk>& rhsLimbs = getLimbs(multiplier);
     size_t lhsSize = lhsLimbs.size();
     size_t rhsSize = rhsLimbs.size();
-    std::vector<Chunk> limbs(lhsSize + rhsSize, 0);
-    for (size_t i = 0; i < lhsSize; i++) {
+    std::vector<Chunk> limbs(lhsSize + rhsSize, ZERO);
+
+    for (size_t lhsIdx = 0; lhsIdx < lhsSize; lhsIdx++) {
+        const Chunk LHS_CHUNK = lhsLimbs[lhsIdx];
+        if (LHS_CHUNK == 0) {
+            continue;
+        }
         Chunk carry = 0;
-        for (size_t j = 0; j < rhsSize; j++) {
-            MulChunk product =
-                (static_cast<MulChunk>(lhsLimbs[i]) * rhsLimbs[j]) + limbs[i + j] + carry;
-            limbs[i + j] = static_cast<Chunk>(product % (MAX_VALUE + 1));
-            carry = static_cast<Chunk>(product / (MAX_VALUE + 1));
+        size_t baseIndex = lhsIdx;
+        size_t rhsIdx = 0;
+        for (; rhsIdx + 3 < rhsSize; rhsIdx += 4) {
+            MulChunk product0 = (static_cast<MulChunk>(LHS_CHUNK) * rhsLimbs[rhsIdx]) +
+                                limbs[baseIndex + rhsIdx] + carry;
+            limbs[baseIndex + rhsIdx] = static_cast<Chunk>(product0);
+            carry = static_cast<Chunk>(product0 >> SHIFT);
+
+            MulChunk product1 = (static_cast<MulChunk>(LHS_CHUNK) * rhsLimbs[rhsIdx + 1]) +
+                                limbs[baseIndex + rhsIdx + 1] + carry;
+            limbs[baseIndex + rhsIdx + 1] = static_cast<Chunk>(product1);
+            carry = static_cast<Chunk>(product1 >> SHIFT);
+
+            MulChunk product2 = (static_cast<MulChunk>(LHS_CHUNK) * rhsLimbs[rhsIdx + 2]) +
+                                limbs[baseIndex + rhsIdx + 2] + carry;
+            limbs[baseIndex + rhsIdx + 2] = static_cast<Chunk>(product2);
+            carry = static_cast<Chunk>(product2 >> SHIFT);
+
+            MulChunk product3 = (static_cast<MulChunk>(LHS_CHUNK) * rhsLimbs[rhsIdx + 3]) +
+                                limbs[baseIndex + rhsIdx + 3] + carry;
+            limbs[baseIndex + rhsIdx + 3] = static_cast<Chunk>(product3);
+            carry = static_cast<Chunk>(product3 >> SHIFT);
+        }
+        for (; rhsIdx < rhsSize; rhsIdx++) {
+            MulChunk product = (static_cast<MulChunk>(LHS_CHUNK) * rhsLimbs[rhsIdx]) +
+                               limbs[baseIndex + rhsIdx] + carry;
+            limbs[baseIndex + rhsIdx] = static_cast<Chunk>(product);
+            carry = static_cast<Chunk>(product >> SHIFT);
         }
         if (carry > 0) {
-            limbs[i + rhsSize] += carry;
+            limbs[baseIndex + rhsSize] += carry;
         }
     }
     return BigUInt{removeTrailingZeros(limbs)};
 }
 
-uint64_t modPow(uint64_t base, uint64_t exp, uint64_t mod) {
-    uint64_t result = 1;
+Chunk modPow(Chunk base, Chunk exp, Chunk mod) {
+    Chunk result = ONE;
     base %= mod;
-    while (exp > 0) {
-        if ((exp & (uint8_t)1) != 0U) {
-            result = (__uint128_t)result * base % mod;
+    while (exp > ZERO) {
+        if ((exp & ONE) != ZERO) {
+            result = static_cast<MulChunk>(result) * base % mod;
         }
-        base = (__uint128_t)base * base % mod;
-        exp >>= (uint8_t)1;
+        base = static_cast<MulChunk>(base) * base % mod;
+        exp >>= ONE;
     }
     return result;
 }
 
-uint64_t modInverse(uint64_t number, uint64_t mod) {
-    return modPow(number, mod - 2, mod);
+Chunk modInverse(Chunk number, Chunk mod) {
+    return modPow(number, mod - TWO, mod);
 }
 
-void ntt(std::vector<uint64_t>& number, bool invert) {
+void ntt(std::vector<Chunk>& number, bool invert) {
     size_t size = number.size();
-    for (size_t i = 1, element = 0; i < size; i++) {
-        size_t bit = size >> (uint8_t)1;
-        for (; (element & bit) != 0U; bit >>= (uint8_t)1) {
+    for (size_t i = ONE, element = ZERO; i < size; i++) {
+        size_t bit = size >> ONE;
+        for (; (element & bit) != 0U; bit >>= ONE) {
             element ^= bit;
         }
         element ^= bit;
@@ -71,101 +105,45 @@ void ntt(std::vector<uint64_t>& number, bool invert) {
             std::swap(number[i], number[element]);
         }
     }
-    for (size_t len = 2; len <= size; len <<= (uint8_t)1) {
-        uint64_t wlen = modPow(NTT_ROOT, (NTT_MOD - 1) / len, NTT_MOD);
+    for (size_t len = TWO; len <= size; len <<= ONE) {
+        Chunk wlen = modPow(NTT_ROOT, (NTT_MOD - ONE) / len, NTT_MOD);
         if (invert) {
             wlen = modInverse(wlen, NTT_MOD);
         }
-        for (size_t i = 0; i < size; i += len) {
-            uint64_t first = 1;
-            for (size_t j = 0; j < len / 2; j++) {
-                uint64_t second = number[i + j];
-                uint64_t third = (__uint128_t)number[i + j + (len / 2)] * first % NTT_MOD;
+        for (size_t i = ZERO; i < size; i += len) {
+            Chunk first = ONE;
+            for (size_t j = ZERO; j < len / TWO; j++) {
+                Chunk second = number[i + j];
+                Chunk third = static_cast<MulChunk>(number[i + j + (len / TWO)]) * first % NTT_MOD;
                 number[i + j] = (second + third) % NTT_MOD;
-                number[i + j + (len / 2)] = (second - third + NTT_MOD) % NTT_MOD;
-                first = (__uint128_t)first * wlen % NTT_MOD;
+                number[i + j + (len / TWO)] = (second - third + NTT_MOD) % NTT_MOD;
+                first = static_cast<MulChunk>(first) * wlen % NTT_MOD;
             }
         }
     }
     if (invert) {
-        uint64_t nInv = modInverse(size, NTT_MOD);
+        Chunk nInv = modInverse(size, NTT_MOD);
         for (auto& chunk : number) {
-            chunk = (__uint128_t)chunk * nInv % NTT_MOD;
+            chunk = static_cast<MulChunk>(chunk) * nInv % NTT_MOD;
         }
     }
 }
 
-size_t nextPowerOf2(size_t n) {
-    size_t power = 1;
-    while (power < n) {
-        power <<= (uint8_t)1;
-    }
-    return power;
-}
-
-std::vector<uint64_t> chunksToNTT(const std::vector<Chunk>& chunks) {
-    std::vector<uint64_t> result;
-    result.reserve(chunks.size() * 2);
-    for (const Chunk& chunk : chunks) {
-        result.push_back(chunk & 0xFFFFFFFFULL);
-        result.push_back((chunk >> (uint8_t)32) & 0xFFFFFFFFULL);
-    }
-    return result;
-}
-
-std::vector<Chunk> nttToChunks(const std::vector<uint64_t>& nttResult) {
-    std::vector<Chunk> result;
-    result.reserve((nttResult.size() + 1) / 2);
-    uint64_t carry = 0;
-    for (size_t i = 0; i < nttResult.size(); i += 2) {
-        uint64_t low = (i < nttResult.size()) ? nttResult[i] : 0;
-        uint64_t high = (i + 1 < nttResult.size()) ? nttResult[i + 1] : 0;
-        low += carry;
-        carry = low >> (uint8_t)32;
-        low &= 0xFFFFFFFFULL;
-        high += carry;
-        carry = high >> (uint8_t)32;
-        high &= 0xFFFFFFFFULL;
-        Chunk chunk = low | (high << (uint8_t)32);
-        result.push_back(chunk);
-    }
-    while (carry > 0) {
-        result.push_back(static_cast<Chunk>(carry));
-        carry = 0;
-    }
-    return result;
-}
-
 BigUInt nntMul(const BigUInt& multiplicand, const BigUInt& multiplier) {
-    const std::vector<Chunk>& lhsLimbs = getLimbs(multiplicand);
-    const std::vector<Chunk>& rhsLimbs = getLimbs(multiplier);
-    if (lhsLimbs.empty() || rhsLimbs.empty()) {
-        return makeZero();
-    }
-    if (lhsLimbs.size() + rhsLimbs.size() < 32) {
-        return simpleMul(multiplicand, multiplier);
-    }
-    std::vector<uint64_t> left = chunksToNTT(lhsLimbs);
-    std::vector<uint64_t> right = chunksToNTT(rhsLimbs);
-    size_t resultSize = left.size() + right.size() - 1;
-    size_t powerSize = nextPowerOf2(resultSize);
-    left.resize(powerSize, 0);
-    right.resize(powerSize, 0);
-    for (auto& chunk : left) {
-        chunk %= NTT_MOD;
-    }
-    for (auto& chunk : right) {
-        chunk %= NTT_MOD;
-    }
+    std::vector<Chunk> left = getLimbs(multiplicand);
+    std::vector<Chunk> right = getLimbs(multiplier);
+    size_t resultSize = left.size() + right.size() - ONE;
+    size_t powerSize = std::bit_ceil(resultSize);
+    left.resize(powerSize, ZERO);
+    right.resize(powerSize, ZERO);
     ntt(left, false);
     ntt(right, false);
-    for (size_t i = 0; i < powerSize; i++) {
-        left[i] = (__uint128_t)left[i] * right[i] % NTT_MOD;
+    for (size_t i = ZERO; i < powerSize; i++) {
+        left[i] = static_cast<MulChunk>(left[i]) * right[i] % NTT_MOD;
     }
     ntt(left, true);
     left.resize(resultSize);
-    std::vector<Chunk> resultChunks = nttToChunks(left);
-    return BigUInt{removeTrailingZeros(resultChunks)};
+    return BigUInt{removeTrailingZeros(left)};
 }
 
 }  // namespace
@@ -174,8 +152,8 @@ BigUInt mul(const BigUInt& multiplicand, const BigUInt& multiplier) {
     if (isZero(multiplicand) || isZero(multiplier)) {
         return makeZero();
     }
-    size_t maxByteLength = std::max(getByteLength(multiplicand), getByteLength(multiplier));
-    if (maxByteLength <= LARGE_BYTE_LENGTH) {
+    size_t size = getSize(multiplicand) + getSize(multiplier);
+    if (size <= SIMPLE_THRESHOLD) {
         return simpleMul(multiplicand, multiplier);
     }
     return nntMul(multiplicand, multiplier);

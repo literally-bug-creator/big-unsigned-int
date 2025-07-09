@@ -82,7 +82,7 @@ TEST_F(BigUIntMul, SingleChunkByTwo) {
 TEST_F(BigUIntMul, MaxChunkByTwo) {
     BigUInt lhs = createTestBigUInt({MAX_VALUE});
     BigUInt rhs = createTestBigUInt({2});
-    BigUInt expected = createTestBigUInt({MAX_VALUE - 1, 1});
+    BigUInt expected = createTestBigUInt({MAX_VALUE * 2});
 
     BigUInt result = mul(lhs, rhs);
 
@@ -92,7 +92,7 @@ TEST_F(BigUIntMul, MaxChunkByTwo) {
 TEST_F(BigUIntMul, MaxChunkByMaxChunk) {
     BigUInt lhs = createTestBigUInt({MAX_VALUE});
     BigUInt rhs = createTestBigUInt({MAX_VALUE});
-    BigUInt expected = createTestBigUInt({1, MAX_VALUE - 1});
+    BigUInt expected = createTestBigUInt({1, 9999999999999999998ULL});
 
     BigUInt result = mul(lhs, rhs);
 
@@ -172,7 +172,7 @@ TEST_F(BigUIntMul, OneByThreeChunks) {
 TEST_F(BigUIntMul, LargeNumbers) {
     BigUInt lhs = createTestBigUInt({MAX_VALUE, MAX_VALUE});
     BigUInt rhs = createTestBigUInt({2});
-    BigUInt expected = createTestBigUInt({MAX_VALUE - 1, MAX_VALUE, 1});
+    BigUInt expected = createTestBigUInt({MAX_VALUE * 2, MAX_VALUE * 2});
 
     BigUInt result = mul(lhs, rhs);
 
