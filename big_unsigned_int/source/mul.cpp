@@ -170,7 +170,7 @@ BigUInt nntMul(const BigUInt& multiplicand, const BigUInt& multiplier) {
 
 }  // namespace
 
-BigUInt mul(const BigUInt& multiplicand, const BigUInt& multiplier) {
+BigUInt mul(const BigUInt& multiplicand, const BigUInt& multiplier) noexcept {
     if (isZero(multiplicand) || isZero(multiplier)) {
         return makeZero();
     }

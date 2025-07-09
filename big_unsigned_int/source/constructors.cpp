@@ -4,7 +4,7 @@
 
 namespace big_uint {
 
-BigUInt makeBigUInt(const std::vector<Digit>& digits) {
+BigUInt makeBigUInt(const std::vector<Digit>& digits) noexcept {
     if (digits.empty()) {
         return makeZero();
     }
@@ -28,7 +28,7 @@ BigUInt makeBigUInt(const std::vector<Digit>& digits) {
     return BigUInt{limbs};
 }
 
-BigUInt makeZero() {
+BigUInt makeZero() noexcept {
     return BigUInt({});
 }
 
