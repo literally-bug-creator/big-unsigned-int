@@ -95,7 +95,7 @@ BigUInt subInternal(const BigUInt& minuend, const BigUInt& subtrahend, size_t sh
 
 }  // namespace
 
-BigUInt add(const BigUInt& augend, const BigUInt& addend) {
+BigUInt add(const BigUInt& augend, const BigUInt& addend) noexcept {
     if (isZero(augend)) {
         return addend;
     }
@@ -105,7 +105,7 @@ BigUInt add(const BigUInt& augend, const BigUInt& addend) {
     return addInternal(augend, addend);
 }
 
-BigUInt sub(const BigUInt& minuend, const BigUInt& subtrahend) {
+BigUInt sub(const BigUInt& minuend, const BigUInt& subtrahend) noexcept {
     if (isZero(subtrahend)) {
         return minuend;
     }
@@ -121,7 +121,7 @@ BigUInt sub(const BigUInt& minuend, const BigUInt& subtrahend) {
     return subInternal(minuend, subtrahend);
 }
 
-BigUInt add(const BigUInt& augend, const BigUInt& addend, size_t shift) {
+BigUInt add(const BigUInt& augend, const BigUInt& addend, size_t shift) noexcept {
     if (isZero(augend) && isZero(addend)) {
         return makeZero();
     }
@@ -140,7 +140,7 @@ BigUInt add(const BigUInt& augend, const BigUInt& addend, size_t shift) {
     return addInternal(augend, addend, shift);
 }
 
-BigUInt sub(const BigUInt& minuend, const BigUInt& subtrahend, size_t shift) {
+BigUInt sub(const BigUInt& minuend, const BigUInt& subtrahend, size_t shift) noexcept {
     if (isZero(subtrahend)) {
         if (shift == 0) {
             return minuend;

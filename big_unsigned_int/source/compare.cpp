@@ -45,19 +45,19 @@ Comparison compare(const BigUInt& lhs, const BigUInt& rhs) {
 }
 }  // namespace
 
-bool isEqual(const BigUInt& left, const BigUInt& right) {
+bool isEqual(const BigUInt& left, const BigUInt& right) noexcept {
     return compare(left, right) == Comparison::EQUAL;
 }
 
-bool isGreater(const BigUInt& left, const BigUInt& right) {
+bool isGreater(const BigUInt& left, const BigUInt& right) noexcept {
     return compare(left, right) == Comparison::GREATER;
 }
 
-bool isLower(const BigUInt& left, const BigUInt& right) {
+bool isLower(const BigUInt& left, const BigUInt& right) noexcept {
     return compare(left, right) == Comparison::LOWER;
 }
 
-bool isGreaterOrEqual(const BigUInt& left, const BigUInt& right) {
+bool isGreaterOrEqual(const BigUInt& left, const BigUInt& right) noexcept {
     switch (compare(left, right)) {
         case Comparison::EQUAL:
         case Comparison::GREATER:
@@ -67,7 +67,7 @@ bool isGreaterOrEqual(const BigUInt& left, const BigUInt& right) {
     }
 }
 
-bool isLowerOrEqual(const BigUInt& left, const BigUInt& right) {
+bool isLowerOrEqual(const BigUInt& left, const BigUInt& right) noexcept {
     switch (compare(left, right)) {
         case Comparison::EQUAL:
         case Comparison::LOWER:

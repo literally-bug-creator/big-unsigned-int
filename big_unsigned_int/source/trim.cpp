@@ -18,7 +18,7 @@ std::vector<Chunk> removeLeadingZeros(const std::vector<Chunk>& limbs) {
     return {limbs.begin() + firstNonZero, limbs.end()};
 }
 }  // namespace
-BigUInt trim(const BigUInt& number) {
+BigUInt trim(const BigUInt& number) noexcept {
     const std::vector<Chunk>& chunks = getLimbs(number);
     return BigUInt(removeLeadingZeros(chunks));
 }

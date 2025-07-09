@@ -14,7 +14,7 @@ std::string addLeadingZeros(const std::string& numberStr) {
 }
 }  // namespace
 
-std::string toString(const BigUInt& number) {
+std::string toString(const BigUInt& number) noexcept {
     static constexpr std::string ZERO_STR = "0";
     if (isZero(number)) {
         return ZERO_STR;
