@@ -2,8 +2,6 @@
 
 BUILD_DIR = build
 CXX = clang++
-TEST_FILTER ?=*
-BENCHMARK_FILTER ?= ""
 
 all: release
 
@@ -18,10 +16,10 @@ release:
 	@cd $(BUILD_DIR) && make -j$(shell nproc)
 
 test:
-	@cd $(BUILD_DIR) && ./tests/run_tests --gtest_filter=$(TEST_FILTER)
+	@cd $(BUILD_DIR) && ./tests/run_tests
 
 benchmark:
-	@cd $(BUILD_DIR) && ./benchmarks/run_benchmark --benchmark_time_unit=ms --benchmark_filter=$(BENCHMARK_FILTER)
+	@cd $(BUILD_DIR) && ./benchmarks/run_benchmark --benchmark_time_unit=ms
 
 format-check:
 	@find . -name "*.cpp" -o -name "*.hpp" -o -name "*.h" -o -name "*.cc" | \
